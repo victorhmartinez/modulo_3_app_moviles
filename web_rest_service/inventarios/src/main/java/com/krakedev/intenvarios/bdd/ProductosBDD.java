@@ -49,7 +49,7 @@ public class ProductosBDD {
 			udm.setDescirpcion(descripcioUDM);
 			
 			//Informacion de categoria
-			String codigoCategoria=rs.getString("categoria");
+			int codigoCategoria=rs.getInt("categoria");
 			String nombreCategoria=rs.getString("nombre_categoria");
 			Categoria categoria = new Categoria();
 			categoria.setCodigoCategoria(codigoCategoria);
@@ -67,4 +67,31 @@ public class ProductosBDD {
 		}
 		return productos;
 	}
+	public void crear (Producto producto) throws KrakedevException {
+		Connection con= null;
+		PreparedStatement ps= null;
+		
+		try {
+			con= ConexionBDD.obtenerConexion();
+		
+			ps=con.prepareStatement("insert into productos (nombre,udm,precio_de_venta,tiene_iva,coste,categoria,stock) "	
+					+ "values (?,?,?,?,?,?,?) ");
+			ps.setString(1, producto.getNombre());
+			ps.setString(2, producto.getUnidadMedida().getNombre());
+			ps.setBigDecimal(3, producto.getPrecioDeVenta());
+			ps.setBoolean(4, producto.isTieneIva());
+			ps.setBigDecimal(5, producto.getCoste());
+			ps.setInt(6, producto.getCategoriaProducto().getCodigoCategoria());
+			ps.setInt(7, producto.getStock());
+
+			ps.executeUpdate();
+	
+		} catch (KrakedevException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (SQLException e) {
+			throw new KrakedevException("Error al insertar el producto. Detalle:"+e.getMessage());
+		}
+	}
+
 }

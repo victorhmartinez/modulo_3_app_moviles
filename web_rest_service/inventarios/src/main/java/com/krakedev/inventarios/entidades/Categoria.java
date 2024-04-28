@@ -1,10 +1,10 @@
 package com.krakedev.inventarios.entidades;
 
 public class Categoria {
-private String codigoCategoria;
+private int codigoCategoria;
 private String nombre;
 private Categoria categoriaPadre;
-public Categoria(String codigoCategoria, String nombre, Categoria categoriaPadre) {
+public Categoria(int codigoCategoria, String nombre, Categoria categoriaPadre) {
 	
 	this.codigoCategoria = codigoCategoria;
 	this.nombre = nombre;
@@ -14,10 +14,10 @@ public Categoria() {
 	
 
 }
-public String getCodigoCategoria() {
+public int getCodigoCategoria() {
 	return codigoCategoria;
 }
-public void setCodigoCategoria(String codigoCategoria) {
+public void setCodigoCategoria(int codigoCategoria) {
 	this.codigoCategoria = codigoCategoria;
 }
 public String getNombre() {
