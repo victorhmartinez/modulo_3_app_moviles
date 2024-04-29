@@ -113,7 +113,7 @@ create table proveedor(
 insert into proveedor(ruc_cedula,nombre,tipo_documento,telefono, correo,direccion)
 	values ('1792222323','Victor Martinez','C','0992545450','fcorreo@correo.com','Loja');
 insert into proveedor(ruc_cedula,nombre,tipo_documento,telefono, correo,direccion)
-	values ('1900056001','SNACK.S.A Martinez','R','0992545450','fcorreo@correo.com','Loja');
+	values ('1900056001','SNACK.SA','R','0992545450','fcorreo@correo.com','Loja');
 	
 select * from proveedor;
 --Estado pedidos
@@ -138,10 +138,10 @@ create table cabecera_pedidos(
 	references estado_pedidos (codigo_estado)
 );
 
-insert into cabecera_pedidos (codigo_cabecera,proveedor,fecha,estado) 
-values (1,'1792222323','30/11/2023 22:30:30','R');
-insert into cabecera_pedidos (codigo_cabecera,proveedor,fecha,estado) 
-values (2,'1792222323','20/11/2023 22:30:30','R');
+insert into cabecera_pedidos (proveedor,fecha,estado) 
+values ('1792222323','30/11/2023 22:30:30','R');
+insert into cabecera_pedidos (proveedor,fecha,estado) 
+values ('1792222323','20/11/2023 22:30:30','R');
 select * from cabecera_pedidos;
 --Detalle pedidos
 create table detalle_pedido(
@@ -169,26 +169,24 @@ select * from detalle_pedido;
 create table historial_stock(
 	codigo_historial serial not null,
 	fecha timestamp not null,
-	referencia_c_pedido int  not null,
+	referencia_c_pedido varchar(100)  not null,
 	producto int not null,
 	cantidad int not null,
 	constraint historial_stock_PK PRIMARY KEY(codigo_historial),
-	constraint cabecera_pedido_FK foreign KEY (referencia_c_pedido) 
-	references cabecera_pedidos (codigo_cabecera),	
 	constraint producto_FK foreign KEY (producto) 
 	references productos (codigo_producto)
 );
 
 insert into historial_stock (fecha,referencia_c_pedido,producto,cantidad) 
-values ('20/11/2023',1,1,100);
+values ('20/11/2023','1',1,100);
 insert into historial_stock (fecha,referencia_c_pedido,producto,cantidad) 
-values ('20/11/2023',1,4,50);
+values ('20/11/2023','1',4,50);
 insert into historial_stock (fecha,referencia_c_pedido,producto,cantidad) 
-values ('20/11/2023',2,1,10);
+values ('20/11/2023','2',1,10);
 insert into historial_stock (fecha,referencia_c_pedido,producto,cantidad) 
-values ('20/11/2023',1,1,-5);
+values ('20/11/2023','1',1,-5);
 insert into historial_stock (fecha,referencia_c_pedido,producto,cantidad) 
-values ('20/11/2023',1,4,-1);
+values ('20/11/2023','1',4,-1);
 select * from historial_stock;
 
 --Cabecera venta
