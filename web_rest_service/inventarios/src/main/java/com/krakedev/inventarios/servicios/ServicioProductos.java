@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -43,6 +44,38 @@ public class ServicioProductos {
 		try {
 			prodDBB.crear(producto);
 			return Response.ok().build();
+		} catch (KrakedevException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+	}
+		
+		@Path("actualizar")
+		@PUT
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response actualizar(Producto producto) {
+		
+			ProductosBDD prodDBB = new ProductosBDD();
+			try {
+				prodDBB.actualizar(producto);
+				return Response.ok().build();
+			} catch (KrakedevException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return Response.serverError().build();
+			}
+		}
+		
+		@Path("buscar-identificador/{identificador}")
+		@GET
+		@Produces(MediaType.APPLICATION_JSON)
+	public Response buscarPorIdentificador(@PathParam("identificador") int identificador){
+		ProductosBDD prodBDD = new ProductosBDD();
+		Producto producto = null;
+		try {
+			producto = prodBDD.buscarPorIdentificador(identificador);
+			return Response.ok(producto).build();
 		} catch (KrakedevException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

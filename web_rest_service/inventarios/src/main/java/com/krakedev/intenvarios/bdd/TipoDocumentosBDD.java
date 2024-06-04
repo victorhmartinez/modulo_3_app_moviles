@@ -38,4 +38,24 @@ public class TipoDocumentosBDD {
 		}
 		return tiposDocumentos;
 	}
+
+	public void crear(TipoDocumentos tipoDocumento) throws KrakedevException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = ConexionBDD.obtenerConexion();
+		
+				ps = con.prepareStatement("insert into tipo_documento (codigo_documento,descripcion) " + "values (?,?) ");
+				ps.setString(1, tipoDocumento.getCodigoDocumento());
+				ps.setString(2, tipoDocumento.getDescripcion());
+
+			ps.executeUpdate();
+
+		} catch (KrakedevException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (SQLException e) {
+			throw new KrakedevException("Error al insertar un tipo de documento. Detalle:" + e.getMessage());
+		}
+	}
 }

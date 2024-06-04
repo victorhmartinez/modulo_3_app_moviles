@@ -52,6 +52,9 @@ public class ProveedoresBDD {
 		}
 		return proveedores;
 	}
+	
+	
+	
 	public void crear(Proveedores proveedor) throws KrakedevException{
 		Connection con= null;
 		PreparedStatement ps= null;
@@ -76,4 +79,44 @@ public class ProveedoresBDD {
 			throw new KrakedevException("Error al insertat. Detalle:"+e.getMessage());
 		}
 	}
+
+	public Proveedores buscarPorIdentificador (String identificador) throws KrakedevException{
+
+		Connection con= null;
+		PreparedStatement ps= null;
+		ResultSet rs= null;
+		Proveedores proveedor=null;
+		try {
+			con= ConexionBDD.obtenerConexion();
+		
+			ps=con.prepareStatement("select ruc_cedula,tipo_documento,nombre,telefono,correo,direccion,td.descripcion "
+					+ "from proveedor prov, tipo_documento td "
+					+ "where prov.tipo_documento= td.codigo_documento and prov.ruc_cedula= ?");
+			ps.setString(1, identificador);
+		rs=ps.executeQuery();
+		if(rs.next()) {
+		
+			String tipoDoc=rs.getString("tipo_documento");
+			String descripcion=rs.getString("descripcion");
+			TipoDocumentos tipoDocumento = new TipoDocumentos(tipoDoc,descripcion);
+			
+			
+			String nombre=rs.getString("nombre");
+			String telefono=rs.getString("telefono");
+			String direccion=rs.getString("correo");
+			String correo=rs.getString("direccion");
+
+			proveedor= new Proveedores(identificador, tipoDocumento, nombre,telefono,direccion,correo);
+			
+
+		}
+		} catch (KrakedevException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (SQLException e) {
+			throw new KrakedevException("Error al consultar el proveedor. Detalle:"+e.getMessage());
+		}
+		return proveedor;
+	}
+
 }
